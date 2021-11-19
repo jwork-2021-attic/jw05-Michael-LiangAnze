@@ -25,7 +25,7 @@ public class Map {
                 str = s.nextLine();
                 String[] line = str.split(" ");
                 for (int j = 0; j < mapSize; ++j) {
-                    map[i][j] = Integer.parseInt(line[j]);
+                    map[j][i] = Integer.parseInt(line[j]);
                 }
                 i++;
             }
@@ -45,5 +45,9 @@ public class Map {
     }
     public int[][] getMap() {
         return this.map;
+    }
+
+    public int getMapSize(){
+        return mapSize;
     }
 }

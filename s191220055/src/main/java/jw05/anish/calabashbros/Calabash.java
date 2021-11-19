@@ -3,7 +3,7 @@ package jw05.anish.calabashbros;
 import java.util.concurrent.TimeUnit;
 import java.awt.Color;
 
-public class Calabash extends Creature implements Comparable<Calabash>, Runnable {
+public class Calabash extends Creature implements Runnable {
 
     private int rank;
 
@@ -19,11 +19,6 @@ public class Calabash extends Creature implements Comparable<Calabash>, Runnable
     @Override
     public String toString() {
         return String.valueOf(this.rank);
-    }
-
-    @Override
-    public int compareTo(Calabash o) {
-        return Integer.valueOf(this.rank).compareTo(Integer.valueOf(o.rank));
     }
 
     public void swap(Calabash another) {

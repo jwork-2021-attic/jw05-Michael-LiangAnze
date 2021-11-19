@@ -1,12 +1,11 @@
 package jw05.anish.calabashbros;
-import java.awt.Color;
+
 
 public class World {
 
     public static final int WIDTH = 30;
     public static final int HEIGHT = 30;
-
-
+    
     private Tile<Thing>[][] tiles;
 
     public World() {

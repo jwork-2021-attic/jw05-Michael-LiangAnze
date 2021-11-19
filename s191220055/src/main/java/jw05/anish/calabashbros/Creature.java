@@ -14,6 +14,23 @@ public class Creature extends Thing {
         this.world.put(this, xPos, yPos);      
     }
 
+    public void moveTo(int direction){ // 1 2 3 4分别代表上下左右
+        if(direction == 1){
+            // moveTo(getX(),getY()-1);
+            moveTo(getX()-1,getY());
+        }
+        else if(direction == 2){
+            // moveTo(getX(),getY()+1);
+            moveTo(getX()+1,getY());
+        }
+        else if(direction == 3){
+            // moveTo(getX()-1,getY());
+            moveTo(getX(),getY()-1);
+        }
+        else if(direction == 4){
+            moveTo(getX(),getY()+1);
+        }
+    }
     public void disappear(){
         this.world.put(new Floor(this.world),getX(),getY());
     }
