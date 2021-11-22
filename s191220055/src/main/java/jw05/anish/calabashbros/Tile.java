@@ -1,5 +1,6 @@
 package jw05.anish.calabashbros;
 
+import jw05.anish.algorithm.Tuple;
 public class Tile<T extends Thing> {
 
     private T thing;
@@ -15,14 +16,20 @@ public class Tile<T extends Thing> {
         this.thing.setTile(this);
     }
 
+    @Deprecated
     public int getxPos() {
         return xPos;
+    }
+
+    public Tuple<Integer,Integer> getPos(){
+        return new Tuple<Integer,Integer>(xPos, yPos);
     }
 
     public void setxPos(int xPos) {
         this.xPos = xPos;
     }
 
+    @Deprecated
     public int getyPos() {
         return yPos;
     }

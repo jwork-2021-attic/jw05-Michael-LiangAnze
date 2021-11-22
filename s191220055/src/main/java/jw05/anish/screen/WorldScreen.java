@@ -4,44 +4,50 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import jw05.anish.calabashbros.Calabash;
-import jw05.anish.calabashbros.Monster;
+import jw05.anish.calabashbros.Bomber;
 import jw05.anish.calabashbros.World;
 import jw05.anish.calabashbros.Wall;
-import java.util.ArrayList;
 import jw05.asciiPanel.AsciiPanel;
 import jw05.anish.map.Map;
-import jw05.anish.algorithm.Tuple;
+
+
 public class WorldScreen implements Screen {
 
     private World world;
     Map map;
     int mapSize;
-    ArrayList<Tuple<Calabash,Integer>> calabashList;
 
     public WorldScreen() {
-        calabashList = new ArrayList<Tuple<Calabash,Integer>>();
         world = new World();
         mapSize = world.getWorldSize();
         generateMyMap();
-        Monster m = new Monster(new Color(255, 0, 0), 1,world,map,calabashList); // original place
-        Calabash c = new Calabash(new Color(255, 240, 0), 1, world);
-        world.put(m, 1, 1);
-        world.put(c, 28, 1);
-        calabashList.add(new Tuple<Calabash,Integer>(c,-1));
-        // 启动刷新线程
-        Thread t = new Thread(m);
-        t.start();
+        Calabash calabash1 = new Calabash(new Color(255, 240, 0), 1,100, world,map);
+        Bomber monster1 = new Bomber(new Color(255, 0, 0), 1, 100, 4, world, map, calabash1);
+ 
+        
+
+        world.put(monster1, 6, 5);
+        world.put(calabash1, 6, 1);
+
+        map.setMoveable(3,1,1);
+        map.setMoveable(1,1,1);
+
+        Thread t1 = new Thread(calabash1);
+        Thread t2 = new Thread(monster1);
+        
+        t2.start();
+        t1.start();
     }
 
     private void generateMyMap() {
         try {
             map = new Map(mapSize, "src/main/java/jw05/anish/map/map.txt");
             map.loadMap();
-            // M.outputMap();
-            int[][] tempMap = map.getMap();
+            int[][] tempMap = new int[mapSize][mapSize];
+            map.getMapState(tempMap);
             for (int i = 0; i < mapSize; i++) {
                 for (int j = 0; j < mapSize; j++) {
-                    if (tempMap[j][i] == 1) {
+                    if (tempMap[i][j] == 1) {
                         world.put(new Wall(this.world), i, j);
                     }
                 }

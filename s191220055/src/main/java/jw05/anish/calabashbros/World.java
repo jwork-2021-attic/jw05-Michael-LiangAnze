@@ -8,6 +8,7 @@ public class World {
     
     private Tile<Thing>[][] tiles;
 
+    @SuppressWarnings(value = "all")
     public World() {
 
         if (tiles == null) {

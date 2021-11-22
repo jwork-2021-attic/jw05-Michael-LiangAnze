@@ -1,6 +1,7 @@
 package jw05.anish.calabashbros;
 
 import java.awt.Color;
+import jw05.anish.algorithm.Tuple;
 
 public class Thing {
 
@@ -8,12 +9,8 @@ public class Thing {
 
     public Tile<? extends Thing> tile;
 
-    public int getX() {
-        return this.tile.getxPos();
-    }
-
-    public int getY() {
-        return this.tile.getyPos();
+    public Tuple<Integer, Integer> getPos() {
+        return this.tile.getPos();
     }
 
     public void setTile(Tile<? extends Thing> tile) {
@@ -26,10 +23,14 @@ public class Thing {
         this.world = world;
     }
 
-    private final Color color;
+    private Color color;
 
     public Color getColor() {
         return this.color;
+    }
+
+    public void changeColor(int r, int g, int b) {
+        this.color = new Color(r, g, b);
     }
 
     private final char glyph;

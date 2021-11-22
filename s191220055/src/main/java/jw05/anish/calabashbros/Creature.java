@@ -1,43 +1,70 @@
 package jw05.anish.calabashbros;
+
+import jw05.anish.algorithm.Tuple;
+import jw05.anish.map.Map;
 import java.awt.Color;
 
 public class Creature extends Thing {
 
-    int hp=100;
+    int hp;
+    int speed;
+    Map map;
 
     Creature(Color color, char glyph, World world) {
         super(color, glyph, world);
+        hp = 100;
+        speed = 100;
     }
 
-    public void moveTo(int xPos, int yPos) {
-        this.world.put(new Floor(this.world),getX(),getY());
-        this.world.put(this, xPos, yPos);      
+    public boolean moveTo(int beginX, int beginY,int targetX,int targetY) {
+        if(map.moveCreature(beginX, beginY,targetX,targetY)){ //检查当前状态是否可以前往，如果可以就移动
+            this.world.put(new Floor(this.world), beginX, beginY);
+            this.world.put(this, targetX, targetY);
+            return true;
+        }
+        else{
+            System.out.println("blocked!");
+            return false;
+        }
+        
     }
 
-    public void moveTo(int direction){ // 1 2 3 4分别代表上下左右
-        if(direction == 1){
-            // moveTo(getX(),getY()-1);
-            moveTo(getX()-1,getY());
+    public boolean moveTo(int direction) { // 1 2 3 4分别代表上下左右
+        Tuple<Integer,Integer> curPos = getPos();
+        int curX=curPos.first,curY=curPos.second;
+        if (direction == 1) {
+            return moveTo(curX,curY,curX, curY + 1);
+        } else if (direction == 2) {
+            return moveTo(curX,curY,curX, curY - 1);
+        } else if (direction == 3) {
+            return moveTo(curX,curY,curX - 1, curY);
+        } else if (direction == 4) {
+            return moveTo(curX,curY,curX + 1, curY);
         }
-        else if(direction == 2){
-            // moveTo(getX(),getY()+1);
-            moveTo(getX()+1,getY());
-        }
-        else if(direction == 3){
-            // moveTo(getX()-1,getY());
-            moveTo(getX(),getY()-1);
-        }
-        else if(direction == 4){
-            moveTo(getX(),getY()+1);
+        else{
+            System.out.println("direction:"+direction+" is illegal!");
+            return false;
         }
     }
-    public void disappear(){
-        this.world.put(new Floor(this.world),getX(),getY());
+
+    public synchronized int getHp() {
+        return hp;
     }
-    public synchronized void beAttack(Creature c,int damage){
+
+    public void disappear() {
+        Tuple<Integer,Integer> curPos = getPos();
+        this.world.put(new Floor(this.world), curPos.first, curPos.second);
+        map.setMoveable(curPos.first, curPos.second, 0);
+    }
+
+    public synchronized void beAttack(int damage) {
         this.hp -= damage;
+        if(this.hp <= 0){
+            disappear();
+        }
     }
-    public synchronized void attack(Creature c,int damage){
-        c.beAttack(this, damage);
+
+    public synchronized void attack(Creature c, int damage) {
+        c.beAttack(damage);
     }
 }
