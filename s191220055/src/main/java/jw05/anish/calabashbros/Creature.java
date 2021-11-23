@@ -12,14 +12,12 @@ public class Creature extends Thing {
 
     Creature(Color color, char glyph, World world) {
         super(color, glyph, world);
-        hp = 100;
         speed = 100;
     }
 
     public boolean moveTo(int beginX, int beginY,int targetX,int targetY) {
-        if(map.moveCreature(beginX, beginY,targetX,targetY)){ //检查当前状态是否可以前往，如果可以就移动
-            this.world.put(new Floor(this.world), beginX, beginY);
-            this.world.put(this, targetX, targetY);
+        if(map.moveThing(beginX, beginY,targetX,targetY,false)){ //检查当前状态是否可以前往，如果可以就移动
+            this.world.swapPos(new Tuple<>(beginX,beginY), new Tuple<>(targetX,targetY));
             return true;
         }
         else{

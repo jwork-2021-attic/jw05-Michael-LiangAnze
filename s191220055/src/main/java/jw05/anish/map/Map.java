@@ -16,7 +16,7 @@ public class Map {
     public Map(int mapSize, String mapFile) {
         this.mapFile = mapFile;
         this.mapSize = mapSize;
-        this.map = new int[mapSize][mapSize];// 0为可行，1为不可行(墙体或者生物)
+        this.map = new int[mapSize][mapSize];// 0为可行，1为墙体，2为生物，3为炮弹
         lock = new ReentrantLock(); // 可重入锁，防止冲突
     }
 
@@ -71,15 +71,30 @@ public class Map {
         lock.unlock();
     }
 
-    public boolean moveCreature(int beginX, int beginY,int targetX,int targetY) {
+    public boolean moveThing(int beginX, int beginY, int targetX, int targetY,boolean isSetZero) {//最后一个参数给炮弹
         boolean res = false;
         lock.lock();
-        if (map[targetX][targetY] == 0) {//允许移动
-            map[beginX][beginY]=0;
-            map[targetX][targetY]=1;
+        if (map[targetX][targetY] == 0) {// 允许移动
+            int temp = map[beginX][beginY];
+            map[beginX][beginY] = map[targetX][targetY];
+            map[targetX][targetY] = temp;
             res = true;
         } else {
+            if(isSetZero){
+                map[beginX][beginY] = 0;
+            }
             res = false;
+        }
+        lock.unlock();
+        return res;
+    }
+
+    public boolean setThing(int xPos,int yPos,int type){
+        boolean res = false;
+        lock.lock();
+        if(map[xPos][yPos] == 0){ //empty
+            map[xPos][yPos]=type;
+            res= true;
         }
         lock.unlock();
         return res;

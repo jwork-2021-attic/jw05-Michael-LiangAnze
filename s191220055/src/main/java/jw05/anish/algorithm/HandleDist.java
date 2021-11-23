@@ -61,19 +61,19 @@ public class HandleDist {
             // 检查上下左右是否被访问过
             tempx = temp.first;
             tempy = temp.second;
-            if (mapList[tempx - 1][tempy] != 1 && dist[tempx - 1][tempy] == -1) {
+            if (mapList[tempx - 1][tempy] == 0 && dist[tempx - 1][tempy] == -1) {
                 dist[tempx - 1][tempy] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx - 1, tempy));
             }
-            if (mapList[tempx + 1][tempy] != 1 && dist[tempx + 1][tempy] == -1) {
+            if (mapList[tempx + 1][tempy] == 0 && dist[tempx + 1][tempy] == -1) {
                 dist[tempx + 1][tempy] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx + 1, tempy));
             }
-            if (mapList[tempx][tempy - 1] != 1 && dist[tempx][tempy - 1] == -1) {
+            if (mapList[tempx][tempy - 1] == 0 && dist[tempx][tempy - 1] == -1) {
                 dist[tempx][tempy - 1] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx, tempy - 1));
             }
-            if (mapList[tempx][tempy + 1] != 1 && dist[tempx][tempy + 1] == -1) {
+            if (mapList[tempx][tempy + 1] == 0 && dist[tempx][tempy + 1] == -1) {
                 dist[tempx][tempy + 1] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx, tempy + 1));
             }

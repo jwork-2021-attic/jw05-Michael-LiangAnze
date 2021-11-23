@@ -3,8 +3,11 @@ package jw05.anish.screen;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import jw05.anish.calabashbros.Calabash;
+import jw05.anish.calabashbros.Player;
+import jw05.anish.calabashbros.Shooter;
 import jw05.anish.calabashbros.Bomber;
+import jw05.anish.calabashbros.Cannonball;
+import jw05.anish.calabashbros.CannonballList;
 import jw05.anish.calabashbros.World;
 import jw05.anish.calabashbros.Wall;
 import jw05.asciiPanel.AsciiPanel;
@@ -16,27 +19,41 @@ public class WorldScreen implements Screen {
     private World world;
     Map map;
     int mapSize;
-
+    Player player;
+    CannonballList cannonballList;
+    
     public WorldScreen() {
         world = new World();
         mapSize = world.getWorldSize();
         generateMyMap();
-        Calabash calabash1 = new Calabash(new Color(255, 240, 0), 1,100, world,map);
-        Bomber monster1 = new Bomber(new Color(255, 0, 0), 1, 100, 4, world, map, calabash1);
- 
-        
 
-        world.put(monster1, 6, 5);
-        world.put(calabash1, 6, 1);
+        //创建人物
+        player = new Player(new Color(255, 240, 0), 1,300,100,world,map);
+        cannonballList = new CannonballList(player,map,world);
+        Shooter shooter1 = new Shooter(new Color(255, 0, 0), 1, 100, 4, 100,world, map, player,cannonballList);
+        Bomber bomber1 = new Bomber(new Color(255, 0, 255), 1, 100, 4, 100, world, map, player);
 
-        map.setMoveable(3,1,1);
-        map.setMoveable(1,1,1);
+        // 放入世界
+        world.put(player, 6, 1);
+        world.put(shooter1, 6, 4);
+        world.put(bomber1, 6, 10);
 
-        Thread t1 = new Thread(calabash1);
-        Thread t2 = new Thread(monster1);
-        
-        t2.start();
+        // 设置地图
+        map.setMoveable(6,4,1);
+        map.setMoveable(6,1,1);
+        map.setMoveable(6,10,1);
+
+        //设置线程
+        Thread t1 = new Thread(player);
+        Thread t2 = new Thread(shooter1);
+        Thread t3 = new Thread(bomber1);
+        Thread t4 = new Thread(cannonballList);
+
+        // 启动线程
         t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
     }
 
     private void generateMyMap() {
@@ -68,17 +85,21 @@ public class WorldScreen implements Screen {
         }
     }
 
-    int i = 1;
+    @Override
+    public Screen releaseKey(){
+        player.resetDirection();
+        return this;
+    }
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-
-        // if (i < this.steps.length) {
-        // this.execute(steps[i], steps[i - 1]);
-        // i++;
-        // }
-        // calabash.moveTo(2,4);
-        // i++;
+        switch(key.getKeyCode()){
+            case KeyEvent.VK_UP:player.movePlayer(2);break;
+            case KeyEvent.VK_DOWN:player.movePlayer(1);break;
+            case KeyEvent.VK_LEFT:player.movePlayer(3);break;
+            case KeyEvent.VK_RIGHT:player.movePlayer(4);break;
+        }
+        // System.out.println(key.getKeyCode());
         return this;
     }
 }

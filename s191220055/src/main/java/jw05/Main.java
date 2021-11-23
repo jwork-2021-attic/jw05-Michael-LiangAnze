@@ -39,7 +39,6 @@ public class Main extends JFrame implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override
@@ -50,7 +49,8 @@ public class Main extends JFrame implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        screen = screen.releaseKey();
+        repaint();
     }
 
     public static void main(String[] args) {

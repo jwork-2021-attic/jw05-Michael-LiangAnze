@@ -13,6 +13,10 @@ public class Thing {
         return this.tile.getPos();
     }
 
+    public void setPos(Tuple<Integer, Integer> pos){
+        this.tile.setPos(pos);
+    }
+
     public void setTile(Tile<? extends Thing> tile) {
         this.tile = tile;
     }

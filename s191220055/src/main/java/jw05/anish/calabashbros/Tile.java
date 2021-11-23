@@ -25,8 +25,15 @@ public class Tile<T extends Thing> {
         return new Tuple<Integer,Integer>(xPos, yPos);
     }
 
-    public void setxPos(int xPos) {
+    public void setPos(Tuple<Integer,Integer> t){
+        xPos = t.first;
+        yPos = t.second;
+    }
+    
+    @Deprecated
+    public void setPos(int xPos, int yPos){
         this.xPos = xPos;
+        this.yPos = yPos;
     }
 
     @Deprecated
@@ -34,9 +41,6 @@ public class Tile<T extends Thing> {
         return yPos;
     }
 
-    public void setyPos(int yPos) {
-        this.yPos = yPos;
-    }
 
     public Tile() {
         this.xPos = -1;

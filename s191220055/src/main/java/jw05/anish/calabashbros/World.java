@@ -1,5 +1,6 @@
 package jw05.anish.calabashbros;
 
+import jw05.anish.algorithm.Tuple;
 
 public class World {
 
@@ -34,4 +35,10 @@ public class World {
         this.tiles[x][y].setThing(t);
     }
 
+    public void swapPos(Tuple<Integer,Integer>p1,Tuple<Integer,Integer>p2){
+        Thing t1 = get(p1.first,p1.second);
+        Thing t2 = get(p2.first,p2.second);
+        put(t2,p1.first,p1.second);
+        put(t1,p2.first,p2.second);
+    }
 }

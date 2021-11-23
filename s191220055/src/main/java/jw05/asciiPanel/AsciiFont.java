@@ -18,6 +18,7 @@ public class AsciiFont {
     public static final AsciiFont TAFFER_10x10 = new AsciiFont("jw05/resources/taffer_10x10.png", 10, 10);
     public static final AsciiFont QBICFEET_10x10 = new AsciiFont("jw05/resources/qbicfeet_10x10.png", 10, 10);
     public static final AsciiFont TALRYTH_15_15 = new AsciiFont("jw05/resources/talryth_square_15x15.png", 15, 15);
+    public static final AsciiFont MY_WALL = new AsciiFont("jw05/resources/mywall.png", 40, 40);
 
     private String fontFilename;
 
