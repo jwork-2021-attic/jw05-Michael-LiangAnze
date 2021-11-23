@@ -24,7 +24,8 @@ public class Main extends JFrame implements KeyListener {
         add(terminal);
         pack();
         screen = new WorldScreen();
-        Thread t = new Thread(new RefreshScreen(this));
+        screen.rulesScreen();
+        Thread t = new Thread(new RefreshScreen(this,screen));
         t.start();
         addKeyListener(this);
         repaint();

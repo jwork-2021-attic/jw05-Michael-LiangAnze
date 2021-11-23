@@ -9,7 +9,6 @@ import jw05.anish.map.Map;
 public class Shooter extends Creature implements Runnable  {
     private int rank;
     Player target;
-    int detectnDistance;
     private int cd;//冷却时间
     private int sleepTime;
     Random random;
@@ -17,13 +16,14 @@ public class Shooter extends Creature implements Runnable  {
     private final Color alertOffColor = new Color(162, 45, 95);
     CannonballList cannonballList;
     int cannonDamage;
+    private int x1,y1,x2,y2;
+    private int[][]areaMap;
 
-    public Shooter(int rank, int speed,int hp, int detectnDistance, World world, Map map, Player enemy,CannonballList cannonballList) {
+    public Shooter(int rank, int speed,int hp, World world, Map map, Player enemy,CannonballList cannonballList,int x1, int y1,int x2,int y2) {
         super(new Color(162, 45, 95), (char) 2, world);
         this.rank = rank;
         this.speed = speed;
         this.hp = hp;
-        this.detectnDistance = detectnDistance;
         this.map = map;
         target = enemy;
         this.cannonballList = cannonballList;
@@ -31,6 +31,30 @@ public class Shooter extends Creature implements Runnable  {
         this.sleepTime = 1000 / speed * 50;
         this.cd = 1;
         cannonDamage = cannonballList.getDamage();
+        setArea(x1, y1, x2, y2);
+    }
+
+    public void setArea(int x1,int y1,int x2, int y2){
+        if(x1 > x2 || y1 > y2){
+            System.out.println("invalid area");
+        }
+        else{
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+        }
+        int mapSize = map.getMapSize();
+        areaMap = new int[mapSize][mapSize];
+        map.getMapState(areaMap);
+
+        for(int i = 0;i < mapSize;++i){
+            for(int j = 0;j < mapSize;++j){
+                if(i < x1 || i > x2 || j < y1 || j > y2){
+                    areaMap[i][j] = 1; //不可见
+                }
+            }
+        }
     }
 
     public int getRank() {
@@ -94,9 +118,33 @@ public class Shooter extends Creature implements Runnable  {
         }
     }
 
-    private boolean randomWalk() {
-        int d = random.nextInt(4) + 1;
-        return moveTo(d);
+    private void randomWalk() {
+        int d;
+        boolean flag;
+        Tuple<Integer,Integer>pos = this.getPos();
+        while(true){
+            flag = false;
+            d = random.nextInt(4) + 1;
+            
+            if(d == 1){
+                flag = areaMap[pos.first][pos.second+1] == 0?true:false;
+            }
+            else if(d == 2){
+                flag = areaMap[pos.first][pos.second-1] == 0?true:false;
+            }
+            else if(d == 3){
+                flag = areaMap[pos.first-1][pos.second] == 0?true:false;
+            }
+            else if(d == 4){
+                flag = areaMap[pos.first+1][pos.second] == 0?true:false;
+            }
+            
+            if(flag){
+                if(moveTo(d)){
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -111,19 +159,20 @@ public class Shooter extends Creature implements Runnable  {
 
     @Override
     public void run() { // 该生物的移动、攻击都由run发起
-        HandleDist hd = new HandleDist(map);
         int targetStepDirection = 0; // 下一步的走向
         Tuple<Integer, Integer> curPos = null, targetPos = null;
 
-        while (true) {
+        while (world.getWorldState()!=2) {
             if (target != null) {
                 curPos = this.getPos();
                 targetPos=target.getPos();
                 if ((targetStepDirection = isFire(curPos,targetPos)) != 0) { //处于攻击位置
+                    
                     setOnAlert(); // 警惕
                     if(cd == 5){    //冷却时间结束
                         if(target.getHp()>0){
                             fire(curPos,targetPos,targetStepDirection);
+                            
                             cd = 4;
                         }
                         else{   //目标消灭
@@ -133,7 +182,9 @@ public class Shooter extends Creature implements Runnable  {
                     }
                 } else {// do nothing
                     setOffAlert();
+                    System.out.println("walking");
                     randomWalk();
+                    System.out.println("done");
                 }
             } else {
                 randomWalk();
@@ -145,6 +196,7 @@ public class Shooter extends Creature implements Runnable  {
             else if(cd == 0){
                 cd = 5;
             }
+            
             try {
                 TimeUnit.MILLISECONDS.sleep(sleepTime);
             } catch (InterruptedException e) {

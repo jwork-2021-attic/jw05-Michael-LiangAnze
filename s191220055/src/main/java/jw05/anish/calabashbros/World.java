@@ -10,29 +10,79 @@ public class World {
     public static final int HEIGHT = WIDTH + 1;
     public final int hpStartPos = 3;
     public final int scoreStartPos = hpStartPos+15;
+    public final int rulesStartX = 0;
+    public final int rulesStartY = 0;
+    public final int pressEnterX = 2;
+    public final int pressEnterY = 10;
+    public final int gameOverInfoX = 10;
+    public final int gameOverInfoY = 13;
     private Tile<Thing>[][] tiles;
+    private int worldState;
+
+    public void setWorldState(int s){
+        worldState = s;
+    }
+
+    public int getWorldState(){
+        return worldState;
+    }
 
     @SuppressWarnings(value = "all")
     public World() {
-
         if (tiles == null) {
             tiles = new Tile[WIDTH][HEIGHT];
         }
-
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 tiles[i][j] = new Tile<>(i, j);
+            }
+        }
+    }
+
+    public void setRulesWorld(){ //开始界面
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++){
+                tiles[i][j].setThing(new ScreenInfo(this, new Color(0, 0, 0), 0));
+            }
+        }
+        String []rules = {"Rules:",
+                            " -Escape the maze and win.",
+                            " -One heart damage per attack.",
+                            " -Pick red hearts and add hp."};
+        int lineNum = 0;
+        for(String line :rules){
+            for(int i = 0;i<line.length();++i){
+                tiles[rulesStartX+i][rulesStartY+lineNum].setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) line.charAt(i)));
+            }
+            lineNum+=2;
+        }
+
+        String temp = "PRESS ENTER TO START";
+        for(int i = 0;i<temp.length();++i){
+            tiles[pressEnterX+i][pressEnterY].setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) temp.charAt(i)));
+        }
+    }
+
+    public void setGameWorld(){ //游戏正式开始
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
                 tiles[i][j].setThing(new Floor(this));
             }
         }
-
         for (int i = 0; i < WIDTH; ++i) {
             for (int j = WIDTH; j < HEIGHT; ++j) {
-                tiles[i][j] = new Tile<>(i, j);
                 tiles[i][j].setThing(new ScreenInfo(this, new Color(0, 0, 0), 0));
             }
         }
     }
+
+    public void setGameOverWorld(){
+        String info = "GAME OVER";
+        for(int i = 0;i<info.length();++i){
+            tiles[gameOverInfoX+i][gameOverInfoY].setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) info.charAt(i)));
+        }
+    }
+
 
     private int transformX(int xPos) {
         return xPos;
@@ -85,7 +135,7 @@ public class World {
         }
     }
     public int getWorldSize() {
-        return WIDTH;
+        return Math.min(WIDTH,HEIGHT);
     }
 
     public Thing get(int x, int y) {

@@ -1,6 +1,7 @@
 package jw05.anish.screen;
 
 import java.awt.event.KeyEvent;
+import java.util.concurrent.ExecutorService;
 
 import jw05.asciiPanel.AsciiPanel;
 
@@ -11,4 +12,17 @@ public interface Screen {
     public Screen respondToUserInput(KeyEvent key);
 
     public Screen releaseKey();
+
+    public void rulesScreen();
+
+    public void startScreen();
+
+    public void gameOverScreen();
+
+    public void updateScreenState();
+
+    public int getScreenState();
+
+    public ExecutorService getThreadPool();
+    
 }

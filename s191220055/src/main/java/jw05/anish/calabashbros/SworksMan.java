@@ -46,6 +46,7 @@ public class SworksMan extends Creature implements Runnable {
         int mapSize = map.getMapSize();
         areaMap = new int[mapSize][mapSize];
         map.getMapState(areaMap);
+
         for(int i = 0;i < mapSize;++i){
             for(int j = 0;j < mapSize;++j){
                 if(i < x1 || i > x2 || j < y1 || j > y2){
@@ -53,12 +54,7 @@ public class SworksMan extends Creature implements Runnable {
                 }
             }
         }
-        for(int i = 0;i < mapSize;++i){
-            for(int j = 0;j < mapSize;++j){
-                System.out.print(areaMap[i][j]+" ");
-            }
-            System.out.print('\n');
-        }
+
     }
     public int getRank() {
         return this.rank;
@@ -70,10 +66,6 @@ public class SworksMan extends Creature implements Runnable {
     }
 
     private boolean reachTarget(int beginX, int beginY, int targetX, int targetY) {
-        // if (beginX >= targetX - 1 && beginX <= targetX + 1 && beginY <= targetY + 1 && beginY >= targetY - 1) {
-        //   return true;
-        //} else
-        //    return false;
         if(beginX == targetX){
             if(beginY == targetY - 1 || beginY == targetY + 1){
                 return true;
@@ -99,17 +91,40 @@ public class SworksMan extends Creature implements Runnable {
         this.target = c;
     }
 
-    private boolean enemyComing() { // 用以寻找敌人
-        Tuple<Integer, Integer> curPos = getPos();
-        Tuple<Integer, Integer> targetPos = target.getPos();
+    private boolean enemyComing(Tuple<Integer,Integer> curPos,Tuple<Integer,Integer> targetPos) { // 用以寻找敌人
         return Math.abs(targetPos.first - curPos.first) <= detectnDistance
-                && Math.abs(targetPos.second - curPos.second) <= detectnDistance;
+                && Math.abs(targetPos.second - curPos.second) <= detectnDistance
+                && targetPos.first >= x1
+                && targetPos.first <= x2
+                && targetPos.second >= y1
+                && targetPos.second <= y2;
     }
 
-    private boolean randomWalk() {
-        int d = random.nextInt(4) + 1;
-        // System.out.println(d);
-        return moveTo(d);
+    private void randomWalk() {
+        int d;
+        boolean flag;
+        Tuple<Integer,Integer>pos = this.getPos();
+        while(true){
+            flag = false;
+            d = random.nextInt(4) + 1;
+            if(d == 1){
+                flag = areaMap[pos.first][pos.second+1] == 0?true:false;
+            }
+            else if(d == 2){
+                flag = areaMap[pos.first][pos.second-1] == 0?true:false;
+            }
+            else if(d == 3){
+                flag = areaMap[pos.first-1][pos.second] == 0?true:false;
+            }
+            else if(d == 4){
+                flag = areaMap[pos.first+1][pos.second] == 0?true:false;
+            }
+            if(flag){
+                if(moveTo(d)){
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -128,12 +143,12 @@ public class SworksMan extends Creature implements Runnable {
         int nextStepDirection = 0; // 下一步的走向
         Tuple<Integer, Integer> curPos = null, targetPos = null;
 
-        while (true) {
+        while (world.getWorldState() != 2) {
             if (target != null) {
-                if (enemyComing()) { // enemy coming, go attack
+                curPos = getPos();
+                targetPos = target.getPos();
+                if (enemyComing(curPos,targetPos)) { // enemy coming, go attack
                     setOnAlert(); //警惕
-                    curPos = getPos();
-                    targetPos = target.getPos();
                     if (!reachTarget(curPos.first, curPos.second, targetPos.first, targetPos.second)) {
                         // 使用的是同一刻的地图，在calculateDist方法中获取
                         hd.calculateDist(curPos.first, curPos.second); // step1:从当前坐标开始计算到其余位置的最短距离
@@ -148,13 +163,11 @@ public class SworksMan extends Creature implements Runnable {
                     }
                 } else {// do nothing
                     setOffAlert();//解除警惕
-                    while (!randomWalk())
-                        ;
+                    randomWalk();
                 }
             } else {
                 setOffAlert();
-                while (!randomWalk())
-                    ;
+                randomWalk();
             }
             try {
                 TimeUnit.MILLISECONDS.sleep(sleepTime);

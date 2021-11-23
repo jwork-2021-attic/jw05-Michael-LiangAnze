@@ -54,30 +54,39 @@ public class HandleDist {
         Tuple<Integer, Integer> temp;
         int tempx, tempy;
         map.getMapState(mapList);
-        resetDist();// 获取地图后，需要重新设置距离
+        // map.outputMap();
+        resetDist();
+        // output();// 获取地图后，需要重新设置距离
         dist[beginX][beginY] = 0;
         mapList[beginX][beginY]=0;//要将自己的位置设置为可行，否则无法计算路径
         while ((temp = Q.poll()) != null) {// queue is not empty
             // 检查上下左右是否被访问过
             tempx = temp.first;
             tempy = temp.second;
+            // System.out.println((tempx - 1)+","+tempy);
             if (mapList[tempx - 1][tempy] == 0 && dist[tempx - 1][tempy] == -1) {
                 dist[tempx - 1][tempy] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx - 1, tempy));
             }
+            // System.out.println((tempx + 1)+","+tempy);
             if (mapList[tempx + 1][tempy] == 0 && dist[tempx + 1][tempy] == -1) {
                 dist[tempx + 1][tempy] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx + 1, tempy));
             }
+            // System.out.println(tempx+","+ (tempy-1));
             if (mapList[tempx][tempy - 1] == 0 && dist[tempx][tempy - 1] == -1) {
                 dist[tempx][tempy - 1] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx, tempy - 1));
             }
+            // System.out.println(tempx+","+ (tempy+1));
             if (mapList[tempx][tempy + 1] == 0 && dist[tempx][tempy + 1] == -1) {
                 dist[tempx][tempy + 1] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx, tempy + 1));
             }
+            // output();
         }
+        // System.out.println("done");
+        
     }
 
     public int getNextStep(int targetX, int targetY) { // 1 2 3 4 分别代表上下左右
