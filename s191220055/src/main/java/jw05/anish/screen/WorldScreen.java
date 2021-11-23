@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import jw05.anish.calabashbros.Player;
 import jw05.anish.calabashbros.Shooter;
-import jw05.anish.calabashbros.Bomber;
+import jw05.anish.calabashbros.SworksMan;
 import jw05.anish.calabashbros.Cannonball;
 import jw05.anish.calabashbros.CannonballList;
 import jw05.anish.calabashbros.World;
@@ -27,32 +27,34 @@ public class WorldScreen implements Screen {
         mapSize = world.getWorldSize();
         generateMyMap();
 
+        // 设置地图
+        map.setMoveable(6,1,1);
+        map.setMoveable(6,2,1);
+        // map.setMoveable(7,10,1);
+        
         //创建人物
-        player = new Player(new Color(255, 240, 0), 1,300,100,world,map);
-        cannonballList = new CannonballList(player,map,world);
-        Shooter shooter1 = new Shooter(new Color(255, 0, 0), 1, 100, 4, 100,world, map, player,cannonballList);
-        Bomber bomber1 = new Bomber(new Color(255, 0, 255), 1, 100, 4, 100, world, map, player);
+        player = new Player(new Color(0, 255, 0), 1,300,6,world,map);
+        cannonballList = new CannonballList(1,400,player,map,world);
+        Shooter shooter1 = new Shooter(1, 100, 4, 100,world, map, player,cannonballList);
+        // SworksMan sworksMan1 = new SworksMan(1, 100, 4,1, 100, world, map, player,3,7,9,13);
 
         // 放入世界
         world.put(player, 6, 1);
-        world.put(shooter1, 6, 4);
-        world.put(bomber1, 6, 10);
+        world.put(shooter1, 6, 2);
+        // world.put(sworksMan1, 7, 10);
 
-        // 设置地图
-        map.setMoveable(6,4,1);
-        map.setMoveable(6,1,1);
-        map.setMoveable(6,10,1);
+
 
         //设置线程
         Thread t1 = new Thread(player);
         Thread t2 = new Thread(shooter1);
-        Thread t3 = new Thread(bomber1);
+        // Thread t3 = new Thread(sworksMan1);
         Thread t4 = new Thread(cannonballList);
 
         // 启动线程
         t1.start();
         t2.start();
-        t3.start();
+        // t3.start();
         t4.start();
     }
 

@@ -55,14 +55,14 @@ public class Creature extends Thing {
         map.setMoveable(curPos.first, curPos.second, 0);
     }
 
-    public synchronized void beAttack(int damage) {
-        this.hp -= damage;
-        if(this.hp <= 0){
-            disappear();
-        }
+
+
+
+    public void setOnAlert(){
+        
     }
 
-    public synchronized void attack(Creature c, int damage) {
-        c.beAttack(damage);
+    public void setOffAlert(){
+        
     }
 }

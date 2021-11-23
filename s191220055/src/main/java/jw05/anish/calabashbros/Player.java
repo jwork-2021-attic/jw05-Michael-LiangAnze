@@ -9,6 +9,7 @@ public class Player extends Creature implements Runnable {
     private int rank;
     private int direction;
     private int sleepTime;
+    private int score;
 
     public Player(Color color, int rank, int speed, int hp, World world, Map map) {
         super(color, (char) 2, world);
@@ -17,7 +18,9 @@ public class Player extends Creature implements Runnable {
         this.map = map;
         this.hp = hp;
         this.direction = 0;
+        score = 1;
         this.sleepTime = 1000 / speed * 50;
+        world.setInfo(hp, score);
     }
 
     public void movePlayer(int direction) {
@@ -30,6 +33,16 @@ public class Player extends Creature implements Runnable {
 
     public int getRank() {
         return this.rank;
+    }
+
+    public synchronized void beAttack(int damage) {
+        this.hp -= damage;
+        if(this.hp <= 0){
+            disappear();
+        }
+        score--;
+        world.setInfo(hp,score);
+        System.out.println(score);
     }
 
     @Override

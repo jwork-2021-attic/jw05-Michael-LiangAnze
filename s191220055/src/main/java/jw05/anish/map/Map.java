@@ -16,7 +16,7 @@ public class Map {
     public Map(int mapSize, String mapFile) {
         this.mapFile = mapFile;
         this.mapSize = mapSize;
-        this.map = new int[mapSize][mapSize];// 0为可行，1为墙体，2为生物，3为炮弹
+        this.map = new int[mapSize][mapSize];// 0为可行，1为不可行（墙体，生物，炮弹
         lock = new ReentrantLock(); // 可重入锁，防止冲突
     }
 

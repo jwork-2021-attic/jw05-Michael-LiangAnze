@@ -21,7 +21,7 @@ public class Thing {
         this.tile = tile;
     }
 
-    Thing(Color color, char glyph, World world) {
+    public Thing(Color color, char glyph, World world) {
         this.color = color;
         this.glyph = glyph;
         this.world = world;
@@ -33,8 +33,8 @@ public class Thing {
         return this.color;
     }
 
-    public void changeColor(int r, int g, int b) {
-        this.color = new Color(r, g, b);
+    public void changeColor(Color c) {
+        this.color = c;
     }
 
     private final char glyph;
