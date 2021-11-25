@@ -19,7 +19,7 @@ public class Creature extends Thing {
         if (map.moveThing(beginX, beginY, targetX, targetY, false,null)) { // 检查当前状态是否可以前往，如果可以就移动
             return true;
         } else {
-            System.out.println("blocked!");
+            // System.out.println("blocked!");
             return false;
         }
     }

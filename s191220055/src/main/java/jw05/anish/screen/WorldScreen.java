@@ -70,7 +70,7 @@ public class WorldScreen implements Screen {
         Shooter shooter4 = new Shooter(1, 100, 4, world, map, player, cannonballList, 22, 3, 27, 5);
         Shooter shooter5 = new Shooter(1, 100, 4, world, map, player, cannonballList, 26, 35, 38, 38);
 
-        SworksMan sworksMan1 = new SworksMan(1, 100, 4,1, 100, world, map,player,1,11,8,18);
+        SworksMan sworksMan1 = new SworksMan(1, 100, 4,1, 100, world, map,player,1,11,11,18);
         SworksMan sworksMan2 = new SworksMan(1, 100, 4,1, 100, world, map,player,1,22,11,28);
         SworksMan sworksMan3 = new SworksMan(1, 100, 4,1, 100, world, map,player,8,29,15,35);
         SworksMan sworksMan4 = new SworksMan(1, 100, 4,1, 100, world, map,player,11,22,24,28);
