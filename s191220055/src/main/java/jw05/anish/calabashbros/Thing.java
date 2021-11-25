@@ -13,7 +13,7 @@ public class Thing {
         return this.tile.getPos();
     }
 
-    public void setPos(Tuple<Integer, Integer> pos){
+    public void setPos(Tuple<Integer, Integer> pos) {
         this.tile.setPos(pos);
     }
 

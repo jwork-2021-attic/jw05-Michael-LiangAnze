@@ -7,17 +7,24 @@ import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import jw05.anish.algorithm.Tuple;
+import jw05.anish.calabashbros.Cannonball;
+import jw05.anish.calabashbros.Thing;
+import jw05.anish.calabashbros.World;
+
 public class Map {
     int[][] map;
     int mapSize = 0;
     String mapFile;
     Lock lock = null;
+    World world;
 
-    public Map(int mapSize, String mapFile) {
+    public Map(int mapSize, String mapFile,World world) {
         this.mapFile = mapFile;
         this.mapSize = mapSize;
-        this.map = new int[mapSize][mapSize];// 0为可行，1为不可行（墙体，生物，炮弹
+        this.map = new int[mapSize][mapSize];// 0为可行，1为玩家、炮弹、或者敌人，其余为地图元素
         lock = new ReentrantLock(); // 可重入锁，防止冲突
+        this.world = world;//每次一修改地图的状态，马上对world修改，防止出现问题
     }
 
     public void loadMap() throws IOException {
@@ -30,7 +37,7 @@ public class Map {
                 str = s.nextLine();
                 String[] line = str.split(" ");
                 for (int j = 0; j < mapSize; ++j) {
-                    map[i][j] = Integer.parseInt(line[j]);
+                    map[j][i] = Integer.parseInt(line[j]);
                 }
                 i++;
             }
@@ -65,23 +72,25 @@ public class Map {
         return mapSize;
     }
 
-    public void setMoveable(int x, int y, int flag) {
+    public void setMoveable(Tuple<Integer,Integer>pos, int flag) {
         lock.lock();
-        map[x][y] = flag;
+        map[pos.first][pos.second] = flag;
         lock.unlock();
     }
 
-    public boolean moveThing(int beginX, int beginY, int targetX, int targetY,boolean isSetZero) {//最后一个参数给炮弹
+    public synchronized boolean moveThing(int beginX, int beginY, int targetX, int targetY, Boolean isDestroyCannonball, Cannonball c) {// 最后两个参数给炮弹，如果移动失败且该参数不为空，则将炮弹销毁
         boolean res = false;
         lock.lock();
         if (map[targetX][targetY] == 0) {// 允许移动
             int temp = map[beginX][beginY];
             map[beginX][beginY] = map[targetX][targetY];
             map[targetX][targetY] = temp;
+            world.swapPos(new Tuple<Integer,Integer>(beginX,beginY),new Tuple<Integer,Integer>(targetX,targetY));
             res = true;
         } else {
-            if(isSetZero){
+            if (isDestroyCannonball) { //炮弹要销毁
                 map[beginX][beginY] = 0;
+                c.destroy();
             }
             res = false;
         }
@@ -89,12 +98,13 @@ public class Map {
         return res;
     }
 
-    public boolean setThing(int xPos,int yPos,int type){
+    public boolean setThing(Tuple<Integer,Integer>pos, int type,Thing t) {
         boolean res = false;
         lock.lock();
-        if(map[xPos][yPos] == 0){ //empty
-            map[xPos][yPos]=type;
-            res= true;
+        if (map[pos.first][pos.second] == 0) { // empty
+            map[pos.first][pos.second] = type;
+            world.put(t, pos);
+            res = true;
         }
         lock.unlock();
         return res;

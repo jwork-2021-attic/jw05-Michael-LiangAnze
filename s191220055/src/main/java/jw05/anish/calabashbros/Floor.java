@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class Floor extends Thing {
 
-    public Floor(World world,Color c) {
+    public Floor(World world, Color c) {
         super(c, (char) 250, world);
     }
 

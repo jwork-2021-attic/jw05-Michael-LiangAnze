@@ -29,10 +29,11 @@ public class HandleDist {
     public void output() {
         for (int i = 0; i < mapSize; ++i) {
             for (int temp : dist[i]) {
-                System.out.print(temp + " ");
+                System.out.format("%3s ", temp);
             }
             System.out.print('\n');
         }
+            
         System.out.print('\n');
     }
 
@@ -42,7 +43,8 @@ public class HandleDist {
                 if (mapList[i][j] == 0) {
                     dist[i][j] = -1;
                 } else { // 是墙，或者存在生物
-                    dist[i][j] = Integer.MAX_VALUE;
+                    //dist[i][j] = Integer.MAX_VALUE;
+                    dist[i][j]=100;
                 }
             }
         }
@@ -63,28 +65,25 @@ public class HandleDist {
             // 检查上下左右是否被访问过
             tempx = temp.first;
             tempy = temp.second;
-            // System.out.println((tempx - 1)+","+tempy);
             if (mapList[tempx - 1][tempy] == 0 && dist[tempx - 1][tempy] == -1) {
                 dist[tempx - 1][tempy] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx - 1, tempy));
             }
-            // System.out.println((tempx + 1)+","+tempy);
             if (mapList[tempx + 1][tempy] == 0 && dist[tempx + 1][tempy] == -1) {
                 dist[tempx + 1][tempy] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx + 1, tempy));
             }
-            // System.out.println(tempx+","+ (tempy-1));
             if (mapList[tempx][tempy - 1] == 0 && dist[tempx][tempy - 1] == -1) {
                 dist[tempx][tempy - 1] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx, tempy - 1));
             }
-            // System.out.println(tempx+","+ (tempy+1));
             if (mapList[tempx][tempy + 1] == 0 && dist[tempx][tempy + 1] == -1) {
                 dist[tempx][tempy + 1] = dist[tempx][tempy] + 1;
                 Q.offer(new Tuple<Integer, Integer>(tempx, tempy + 1));
             }
             // output();
         }
+        //output();
         // System.out.println("done");
         
     }
@@ -95,19 +94,19 @@ public class HandleDist {
         // 应该选用敌人附近最近的一块砖作为移动的目标
         // int distance = dist[targetX][targetY];
         int distance = Integer.MAX_VALUE;
-        if(dist[targetX-1][targetY] < distance){
+        if(dist[targetX-1][targetY] < distance && dist[targetX-1][targetY] != -1){
             distance=dist[targetX-1][targetY];
             // targetX=targetX-1;
         }
-        if(dist[targetX+1][targetY] < distance){
+        if(dist[targetX+1][targetY] < distance && dist[targetX+1][targetY] != -1){
             distance=dist[targetX+1][targetY];
             // targetX=targetX+1;
         }
-        if(dist[targetX][targetY-1] < distance){
+        if(dist[targetX][targetY-1] < distance && dist[targetX][targetY-1] != -1){
             distance=dist[targetX][targetY-1];
             // targetY=targetY-1;
         }
-        if(dist[targetX][targetY+1] < distance){
+        if(dist[targetX][targetY+1] < distance && dist[targetX][targetY+1] != -1){
             distance=dist[targetX][targetY+1];
             // targetY=targetY+1;
         }

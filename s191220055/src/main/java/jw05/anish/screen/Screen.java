@@ -19,7 +19,7 @@ public interface Screen {
 
     public void gameOverScreen();
 
-    public void updateScreenState();
+    // public void updateScreenState();
 
     public int getScreenState();
 

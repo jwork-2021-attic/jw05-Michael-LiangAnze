@@ -338,6 +338,7 @@ public class AsciiPanel extends JPanel {
         heightInCharacters = height;
 
         defaultBackgroundColor = black;
+        // defaultBackgroundColor = new Color(54,50,41);
         defaultForegroundColor = white;
 
         chars = new char[widthInCharacters][heightInCharacters];

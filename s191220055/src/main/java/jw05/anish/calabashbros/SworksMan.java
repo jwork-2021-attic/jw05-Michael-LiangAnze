@@ -14,13 +14,14 @@ public class SworksMan extends Creature implements Runnable {
     int damage;
     int sleepTime;
     Random random;
-    private final Color alertOnColor = new Color(220, 228, 58);
-    private final Color alertOffColor = new Color(170, 177, 24);
-    private int x1,y1,x2,y2;
-    private int[][]areaMap;
+    private final Color alertOnColor = new Color(255, 255, 0);
+    private final Color alertOffColor = new Color(130, 137, 24);
+    private int x1, y1, x2, y2;
+    private int[][] areaMap;
 
-    public SworksMan(int rank, int speed, int detectnDistance, int damage, int hp,World world, Map map, Player enemy,int x1, int y1,int x2,int y2) {
-        super(new Color(170, 177, 24), (char) 2, world);
+    public SworksMan(int rank, int speed, int detectnDistance, int damage, int hp, World world, Map map, Player enemy,
+            int x1, int y1, int x2, int y2) {
+        super(new Color(170, 177, 24), (char) 1, world);
         this.rank = rank;
         this.speed = speed;
         this.detectnDistance = detectnDistance;
@@ -33,11 +34,10 @@ public class SworksMan extends Creature implements Runnable {
         setArea(x1, y1, x2, y2);
     }
 
-    public void setArea(int x1,int y1,int x2, int y2){
-        if(x1 > x2 || y1 > y2){
+    public void setArea(int x1, int y1, int x2, int y2) {
+        if (x1 > x2 || y1 > y2) {
             System.out.println("invalid area");
-        }
-        else{
+        } else {
             this.x1 = x1;
             this.y1 = y1;
             this.x2 = x2;
@@ -47,15 +47,16 @@ public class SworksMan extends Creature implements Runnable {
         areaMap = new int[mapSize][mapSize];
         map.getMapState(areaMap);
 
-        for(int i = 0;i < mapSize;++i){
-            for(int j = 0;j < mapSize;++j){
-                if(i < x1 || i > x2 || j < y1 || j > y2){
-                    areaMap[i][j] = 1; //不可见
+        for (int i = 0; i < mapSize; ++i) {
+            for (int j = 0; j < mapSize; ++j) {
+                if (i < x1 || i > x2 || j < y1 || j > y2) {
+                    areaMap[i][j] = 1; // 不可见
                 }
             }
         }
 
     }
+
     public int getRank() {
         return this.rank;
     }
@@ -66,23 +67,19 @@ public class SworksMan extends Creature implements Runnable {
     }
 
     private boolean reachTarget(int beginX, int beginY, int targetX, int targetY) {
-        if(beginX == targetX){
-            if(beginY == targetY - 1 || beginY == targetY + 1){
+        if (beginX == targetX) {
+            if (beginY == targetY - 1 || beginY == targetY + 1) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        else if(beginY == targetY){
-            if(beginX == targetX - 1|| beginX == targetX +1){
+        } else if (beginY == targetY) {
+            if (beginX == targetX - 1 || beginX == targetX + 1) {
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -91,36 +88,30 @@ public class SworksMan extends Creature implements Runnable {
         this.target = c;
     }
 
-    private boolean enemyComing(Tuple<Integer,Integer> curPos,Tuple<Integer,Integer> targetPos) { // 用以寻找敌人
+    private boolean enemyComing(Tuple<Integer, Integer> curPos, Tuple<Integer, Integer> targetPos) { // 用以寻找敌人
         return Math.abs(targetPos.first - curPos.first) <= detectnDistance
-                && Math.abs(targetPos.second - curPos.second) <= detectnDistance
-                && targetPos.first >= x1
-                && targetPos.first <= x2
-                && targetPos.second >= y1
-                && targetPos.second <= y2;
+                && Math.abs(targetPos.second - curPos.second) <= detectnDistance && targetPos.first >= x1
+                && targetPos.first <= x2 && targetPos.second >= y1 && targetPos.second <= y2;
     }
 
     private void randomWalk() {
         int d;
         boolean flag;
-        Tuple<Integer,Integer>pos = this.getPos();
-        while(true){
+        Tuple<Integer, Integer> pos = this.getPos();
+        while (true) {
             flag = false;
             d = random.nextInt(4) + 1;
-            if(d == 1){
-                flag = areaMap[pos.first][pos.second+1] == 0?true:false;
+            if (d == 1) {
+                flag = areaMap[pos.first][pos.second + 1] == 0 ? true : false;
+            } else if (d == 2) {
+                flag = areaMap[pos.first][pos.second - 1] == 0 ? true : false;
+            } else if (d == 3) {
+                flag = areaMap[pos.first - 1][pos.second] == 0 ? true : false;
+            } else if (d == 4) {
+                flag = areaMap[pos.first + 1][pos.second] == 0 ? true : false;
             }
-            else if(d == 2){
-                flag = areaMap[pos.first][pos.second-1] == 0?true:false;
-            }
-            else if(d == 3){
-                flag = areaMap[pos.first-1][pos.second] == 0?true:false;
-            }
-            else if(d == 4){
-                flag = areaMap[pos.first+1][pos.second] == 0?true:false;
-            }
-            if(flag){
-                if(moveTo(d)){
+            if (flag) {
+                if (moveTo(d)) {
                     break;
                 }
             }
@@ -143,16 +134,18 @@ public class SworksMan extends Creature implements Runnable {
         int nextStepDirection = 0; // 下一步的走向
         Tuple<Integer, Integer> curPos = null, targetPos = null;
 
-        while (world.getWorldState() != 2) {
+        while (world.getWorldState() < 2) {
             if (target != null) {
                 curPos = getPos();
                 targetPos = target.getPos();
-                if (enemyComing(curPos,targetPos)) { // enemy coming, go attack
-                    setOnAlert(); //警惕
+                if (enemyComing(curPos, targetPos)) { // enemy coming, go attack
+                    setOnAlert(); // 警惕
                     if (!reachTarget(curPos.first, curPos.second, targetPos.first, targetPos.second)) {
                         // 使用的是同一刻的地图，在calculateDist方法中获取
                         hd.calculateDist(curPos.first, curPos.second); // step1:从当前坐标开始计算到其余位置的最短距离
+                        // hd.output();
                         nextStepDirection = hd.getNextStep(targetPos.first, targetPos.second);// step2: 1 2 3 4 代表上下左右
+                        // System.out.println("curPos:"+curPos.first+","+curPos.second+" targetPos:"+targetPos.first+","+targetPos.second);
                         moveTo(nextStepDirection);
                     } else {
                         if (target.getHp() >= 0) {
@@ -162,7 +155,7 @@ public class SworksMan extends Creature implements Runnable {
                         }
                     }
                 } else {// do nothing
-                    setOffAlert();//解除警惕
+                    setOffAlert();// 解除警惕
                     randomWalk();
                 }
             } else {
