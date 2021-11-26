@@ -75,7 +75,7 @@ public class World {
             }
         }
         for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
+            for (int j = 0; j < HEIGHT - 1; j++) {
                 tiles[i][j].setThing(new Floor(this));
             }
         }

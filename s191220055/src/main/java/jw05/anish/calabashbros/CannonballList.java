@@ -11,26 +11,24 @@ public class CannonballList implements Runnable {
     int sleepTime;
     ArrayList<Cannonball> cannonballList = null; // 坐标，炮弹是否有效
     Map map;
-    Player player;
     int damage;
     World world;
     private Lock lock;
 
-    public CannonballList(int damage, int speed, Player player, Map map, World world) {
+    public CannonballList(int damage, int speed, Map map, World world) {
         // cannonballList = new ArrayList<Tuple<Tuple<Integer,Integer>,Integer>>();
         cannonballList = new ArrayList<Cannonball>();
         this.map = map;
         this.sleepTime = 1000 / speed * 50;
-        this.player = player;
         this.damage = damage;
         this.world = world;
         lock = new ReentrantLock();
     }
 
     public void addCannonball(Tuple<Integer, Integer> cannonPos, int direction) {
-        lock.lock();;
-        Cannonball temp = new Cannonball(direction, damage, world, player);
-        if (map.setThing(cannonPos, 1,temp)) {
+        lock.lock();
+        Cannonball temp = new Cannonball(direction, damage, world);
+        if (map.setThing(cannonPos, 1,temp,false,true)) {
             cannonballList.add(temp);
         }
         lock.unlock();

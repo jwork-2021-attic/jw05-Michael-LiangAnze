@@ -48,8 +48,11 @@ public class Creature extends Thing {
 
     public void disappear() {
         Tuple<Integer, Integer> curPos = getPos();
-        this.world.put(new Floor(this.world), curPos);
-        map.setMoveable(curPos, 0);
+        map.setThing(curPos, 0, (new Floor(this.world)),true,false);
+    }
+
+    public void beAttack(int damage){
+
     }
 
     public void setOnAlert() {

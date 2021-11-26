@@ -67,6 +67,13 @@ public class SworksMan extends Creature implements Runnable {
         return String.valueOf(this.rank);
     }
 
+    @Override
+    public synchronized void beAttack(int damage) {
+        this.hp -= damage;
+        if (this.hp <= 0) { // 死亡
+            disappear();
+        }
+    }
     private boolean reachTarget(int beginX, int beginY, int targetX, int targetY) {
         if (beginX == targetX) {
             if (beginY == targetY - 1 || beginY == targetY + 1) {
@@ -135,7 +142,7 @@ public class SworksMan extends Creature implements Runnable {
         int nextStepDirection = 0; // 下一步的走向
         Tuple<Integer, Integer> curPos = null, targetPos = null;
 
-        while (world.getWorldState() < 2) {
+        while (world.getWorldState() < 2 && this.getHp() > 0) {
             if (target != null) {
                 curPos = getPos();
                 targetPos = target.getPos();
@@ -144,9 +151,7 @@ public class SworksMan extends Creature implements Runnable {
                     if (!reachTarget(curPos.first, curPos.second, targetPos.first, targetPos.second)) {
                         // 使用的是同一刻的地图，在calculateDist方法中获取
                         hd.calculateDist(curPos.first, curPos.second); // step1:从当前坐标开始计算到其余位置的最短距离
-                        // hd.output();
                         nextStepDirection = hd.getNextStep(targetPos.first, targetPos.second);// step2: 1 2 3 4 代表上下左右
-                        // System.out.println("curPos:"+curPos.first+","+curPos.second+" targetPos:"+targetPos.first+","+targetPos.second);
                         moveTo(nextStepDirection);
                     } else {
                         if (target.getHp() >= 0) {

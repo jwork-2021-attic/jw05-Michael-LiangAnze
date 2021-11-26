@@ -145,31 +145,20 @@ public class Shooter extends Creature implements Runnable {
         return 0;
     }
 
-    private void fire(Tuple<Integer, Integer> curPos, Tuple<Integer, Integer> targetPos, int direction) {
-        if (direction == 1) {
-            if (targetPos.first == curPos.first && targetPos.second == curPos.second + 1) { // 敌人正好在炮弹的位置
-                target.beAttack(cannonDamage);
-            } else {
-                cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first, curPos.second + 1), direction);
-            }
-        } else if (direction == 2) {
-            if (targetPos.first == curPos.first && targetPos.second == curPos.second - 1) {
-                target.beAttack(cannonDamage);
-            } else {
-                cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first, curPos.second - 1), direction);
-            }
-        } else if (direction == 3) {
-            if (targetPos.first == curPos.first - 1 && targetPos.second == curPos.second) {
-                target.beAttack(cannonDamage);
-            } else {
-                cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first - 1, curPos.second), direction);
-            }
-        } else if (direction == 4) {
-            if (targetPos.first == curPos.first + 1 && targetPos.second == curPos.second) {
-                target.beAttack(cannonDamage);
-            } else {
-                cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first + 1, curPos.second), direction);
-            }
+    private void attack(Tuple<Integer, Integer> curPos, int direction) {
+        switch(direction){
+            case 1:cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first, curPos.second + 1), direction);break;
+            case 2:cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first, curPos.second - 1), direction);break;
+            case 3:cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first - 1, curPos.second), direction);break;
+            case 4:cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first + 1, curPos.second), direction);break;
+        }
+    }
+
+    @Override
+    public synchronized void beAttack(int damage) {
+        this.hp -= damage;
+        if (this.hp <= 0) { // 死亡
+            disappear();
         }
     }
 
@@ -214,17 +203,15 @@ public class Shooter extends Creature implements Runnable {
         int targetStepDirection = 0; // 下一步的走向
         Tuple<Integer, Integer> curPos = null, targetPos = null;
 
-        while (world.getWorldState() < 2) {
+        while (world.getWorldState() < 2 && this.getHp() > 0) {
             if (target != null) {
                 curPos = this.getPos();
                 targetPos = target.getPos();
                 if ((targetStepDirection = isFire(curPos, targetPos)) != 0) { // 处于攻击位置
-
                     setOnAlert(); // 警惕
                     if (cd == 5) { // 冷却时间结束
                         if (target.getHp() > 0) {
-                            fire(curPos, targetPos, targetStepDirection);
-
+                            attack(curPos, targetStepDirection);
                             cd = 4;
                         } else { // 目标消灭
                             target = null;
