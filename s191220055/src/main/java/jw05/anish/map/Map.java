@@ -13,15 +13,14 @@ import jw05.anish.calabashbros.Thing;
 import jw05.anish.calabashbros.World;
 
 public class Map {
-    int[][] map;
-    int mapSize = 0;
+    private int[][] map;
+    private final int mapSize = 40;
     String mapFile;
-    Lock lock = null;
+    private Lock lock = null;
     World world;
 
-    public Map(int mapSize, String mapFile,World world) {
+    public Map(String mapFile,World world) {
         this.mapFile = mapFile;
-        this.mapSize = mapSize;
         this.map = new int[mapSize][mapSize];// 0为可行，1为玩家、炮弹、或者敌人，其余为地图元素
         lock = new ReentrantLock(); // 可重入锁，防止冲突
         this.world = world;//每次一修改地图的状态，马上对world修改，防止出现问题

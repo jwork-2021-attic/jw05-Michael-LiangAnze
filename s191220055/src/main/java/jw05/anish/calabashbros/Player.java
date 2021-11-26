@@ -17,7 +17,7 @@ public class Player extends Creature implements Runnable {
     int[][]mapList;
 
     public Player(Color color, int rank, int speed, int hp, World world, Map map) {
-        super(color, (char) 2, world);
+        super(color, (char) 14, world);
         this.rank = rank;
         this.speed = speed;
         this.map = map;
@@ -58,12 +58,12 @@ public class Player extends Creature implements Runnable {
         world.setInfo(hp, score);
     }
 
-    public boolean isBonus(Tuple<Integer,Integer> pos,int direction){
+    public boolean isReward(Tuple<Integer,Integer> pos,int direction){
         boolean res = false;
         Tuple<Integer,Integer> tempPos;
         switch(direction){
             case 1:
-                if(mapList[pos.first][pos.second+1] == 3){
+                if(mapList[pos.first][pos.second+1] == 99){
                     res = true;
                     tempPos = new Tuple<Integer,Integer>(pos.first,pos.second+1);
                     world.put(new Floor(world), tempPos);
@@ -73,7 +73,7 @@ public class Player extends Creature implements Runnable {
                     res = false;
                 }  break;
             case 2:
-                if(mapList[pos.first][pos.second-1] == 3){
+                if(mapList[pos.first][pos.second-1] == 99){
                     res = true;
                     tempPos = new Tuple<Integer,Integer>(pos.first,pos.second-1);
                     world.put(new Floor(world), tempPos);
@@ -83,7 +83,7 @@ public class Player extends Creature implements Runnable {
                     res = false;
                 }  break;
             case 3:
-                if(mapList[pos.first-1][pos.second] == 3){
+                if(mapList[pos.first-1][pos.second] == 99){
                     res = true;
                     tempPos = new Tuple<Integer,Integer>(pos.first-1,pos.second);
                     world.put(new Floor(world), tempPos);
@@ -93,7 +93,7 @@ public class Player extends Creature implements Runnable {
                     res = false;
                 }  break;
             case 4:
-                if(mapList[pos.first+1][pos.second] == 3){
+                if(mapList[pos.first+1][pos.second] == 99){
                     res = true;
                     tempPos = new Tuple<Integer,Integer>(pos.first+1,pos.second);
                     world.put(new Floor(world), tempPos);
@@ -128,7 +128,7 @@ public class Player extends Creature implements Runnable {
             try {
                 if (direction != 0) {
                     if(!moveTo(direction)){
-                        if(isBonus(pos,direction)){
+                        if(isReward(pos,direction)){
                             getBonus();
                         }
                     }

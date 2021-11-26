@@ -22,6 +22,7 @@ public class Shooter extends Creature implements Runnable {
     public Shooter(int rank, int speed, int hp, World world, Map map, Player enemy, CannonballList cannonballList,
             int x1, int y1, int x2, int y2) {
         super(new Color(162, 45, 95), (char) 1, world);
+        this.initIcon(1, 11);
         this.rank = rank;
         this.speed = speed;
         this.hp = hp;

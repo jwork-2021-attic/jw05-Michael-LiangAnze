@@ -15,7 +15,7 @@ public interface Screen {
 
     public void rulesScreen();
 
-    public void startScreen();
+    public void gamingScreen();
 
     public void gameOverScreen();
 

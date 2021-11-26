@@ -68,17 +68,18 @@ public class World {
         }
     }
 
-    public void setGameWorld() { // 游戏正式开始
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                tiles[i][j].setThing(new Floor(this));
-            }
-        }
+    public void setGamingWorld() { // 游戏正式开始
         for (int i = 0; i < WIDTH; ++i) {
             for (int j = WIDTH; j < HEIGHT; ++j) {
                 tiles[i][j].setThing(new ScreenInfo(this, new Color(0, 0, 0), 0));
             }
         }
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                tiles[i][j].setThing(new Floor(this));
+            }
+        }
+
     }
 
     public void setGameOverWorld() {

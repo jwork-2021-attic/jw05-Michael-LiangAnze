@@ -21,7 +21,8 @@ public class SworksMan extends Creature implements Runnable {
 
     public SworksMan(int rank, int speed, int detectnDistance, int damage, int hp, World world, Map map, Player enemy,
             int x1, int y1, int x2, int y2) {
-        super(new Color(170, 177, 24), (char) 1, world);
+        super(new Color(170, 177, 24), (char) 2, world);
+        this.initIcon(2, 12);
         this.rank = rank;
         this.speed = speed;
         this.detectnDistance = detectnDistance;

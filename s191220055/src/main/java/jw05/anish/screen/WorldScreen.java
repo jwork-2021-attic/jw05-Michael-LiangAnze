@@ -12,6 +12,7 @@ import jw05.anish.calabashbros.SworksMan;
 import jw05.anish.algorithm.Tuple;
 import jw05.anish.calabashbros.Reward;
 import jw05.anish.calabashbros.CannonballList;
+import jw05.anish.calabashbros.MapItem;
 import jw05.anish.calabashbros.World;
 import jw05.anish.calabashbros.Wall;
 import jw05.asciiPanel.AsciiPanel;
@@ -21,27 +22,31 @@ public class WorldScreen implements Screen {
 
     private World world;
     private Map map;
-    private int mapSize;
     private Player player;
     private CannonballList cannonballList;
     private ExecutorService exec;
 
     public WorldScreen() {
         world = new World();
-        mapSize = world.getWorldSize();
         world.setWorldState(0);
     }
 
-    private void generateMyMap() {
+    private void generateOriginalMap() {
         try {
-            map = new Map(mapSize, "src/main/java/jw05/anish/map/map.txt",world);
+            map = new Map("src/main/java/jw05/anish/map/map.txt",world);
             map.loadMap();
+            int mapSize = map.getMapSize();
             int[][] tempMap = new int[mapSize][mapSize];
             map.getMapState(tempMap);
             for (int i = 0; i < mapSize; i++) {
                 for (int j = 0; j < mapSize; j++) {
-                    if (tempMap[i][j] == 1) {
-                        world.put(new Wall(this.world), new Tuple<Integer,Integer>(i,j));
+                    // 对于地图物件的规定：
+                    // 必须在1~9之间
+                    // 1为墙
+                    switch(tempMap[i][j]){
+                        case 1:world.put(new MapItem(177,this.world), new Tuple<Integer,Integer>(i,j));break;
+                        case 2:
+                        default:System.out.println("unknow item with id:"+tempMap[i][j]);
                     }
                 }
             }
@@ -56,13 +61,12 @@ public class WorldScreen implements Screen {
     }
 
     @Override
-    public void startScreen() {
-        world.setGameWorld();
-        mapSize = world.getWorldSize();
-        generateMyMap();
+    public void gamingScreen() {
+        world.setGamingWorld();
+        generateOriginalMap();
   
         // 创建人物和道具
-        player = new Player(new Color(96, 240, 100), 1, 500, 4, world, map);
+        player = new Player(new Color(0 , 245, 255), 1, 500, 4, world, map);
         cannonballList = new CannonballList(1, 400, player, map, world);
         Shooter shooter1 = new Shooter(1, 100, 4, world, map, player, cannonballList, 3, 1, 14, 3);
         Shooter shooter2 = new Shooter(1, 100, 4, world, map, player, cannonballList, 7, 37, 13, 38);
@@ -125,10 +129,10 @@ public class WorldScreen implements Screen {
         map.setMoveable(sworksMan7Pos,1);
         map.setMoveable(sworksMan8Pos,1);
 
-        map.setMoveable(reward1Pos,3);
-        map.setMoveable(reward2Pos,3);
-        map.setMoveable(reward3Pos,3);
-        map.setMoveable(reward4Pos,3);
+        map.setMoveable(reward1Pos,99);
+        map.setMoveable(reward2Pos,99);
+        map.setMoveable(reward3Pos,99);
+        map.setMoveable(reward4Pos,99);
 
         // 放入世界
         world.put(player, playerPos);
@@ -178,15 +182,6 @@ public class WorldScreen implements Screen {
         world.setGameOverWorld();
     }
 
-    // @Override
-    // public void updateScreenState() {
-    //     if (this.player != null) {
-    //         if (world.getWorldState()  2) {
-    //             world.setWorldState(3);
-    //         }
-    //     }
-    // }
-
     @Override
     public int getScreenState() {
         return world.getWorldState();
@@ -220,7 +215,7 @@ public class WorldScreen implements Screen {
         if (world.getWorldState() == 0) { // 开始界面
             if (key.getKeyCode() == KeyEvent.VK_ENTER) {
                 world.setWorldState(1);
-                startScreen();
+                gamingScreen();
             }
         } else if(world.getWorldState() == 1){
             switch (key.getKeyCode()) {

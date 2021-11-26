@@ -25,6 +25,7 @@ public class Creature extends Thing {
     }
 
     public boolean moveTo(int direction) { // 1 2 3 4分别代表上下左右
+        this.setIcon(direction);
         Tuple<Integer, Integer> curPos = getPos();
         int curX = curPos.first, curY = curPos.second;
         if (direction == 1) {
