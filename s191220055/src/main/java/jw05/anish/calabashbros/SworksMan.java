@@ -13,6 +13,7 @@ public class SworksMan extends Creature implements Runnable {
     int detectnDistance;
     int damage;
     int sleepTime;
+    private int cd;
     Random random;
     private final Color alertOnColor = new Color(255, 255, 0);
     private final Color alertOffColor = new Color(130, 137, 24);
@@ -29,6 +30,7 @@ public class SworksMan extends Creature implements Runnable {
         this.map = map;
         this.hp = hp;
         target = enemy;
+        this.cd = 4;
         random = new Random();
         this.damage = damage;
         this.sleepTime = 1000 / speed * 50;
@@ -155,7 +157,10 @@ public class SworksMan extends Creature implements Runnable {
                         moveTo(nextStepDirection);
                     } else {
                         if (target.getHp() >= 0) {
-                            target.beAttack(damage);
+                            if(cd == 4){
+                                target.beAttack(damage);
+                                cd = 3;
+                            }
                         } else {
                             target = null; // 目标消灭
                         }
@@ -168,6 +173,16 @@ public class SworksMan extends Creature implements Runnable {
                 setOffAlert();
                 randomWalk();
             }
+
+            //处理冷却时间
+            if(cd != 4 && cd != 0){
+                cd--;
+            }
+            else if(cd == 0){
+                cd = 4;
+            }
+            
+
             try {
                 TimeUnit.MILLISECONDS.sleep(sleepTime);
             } catch (InterruptedException e) {

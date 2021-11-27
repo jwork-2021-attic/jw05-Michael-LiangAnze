@@ -61,7 +61,7 @@ public class WorldScreen implements Screen {
                         case 5:world.put(new MapItem(AsciiPanel.green,6,this.world), new Tuple<Integer,Integer>(i,j));break;
                         case 6:world.put(new MapItem(AsciiPanel.green,231,this.world), new Tuple<Integer,Integer>(i,j));break;
                         case 7:world.put(new MapItem(new Color(222,184,135),22,this.world), new Tuple<Integer,Integer>(i,j));break;
-                        case 8:world.put(new MapItem(new Color(245,222,179),176,this.world), new Tuple<Integer,Integer>(i,j));break;
+                        case 8:world.put(new MapItem(new Color(255,250,205),176,this.world), new Tuple<Integer,Integer>(i,j));break;
                         case 9:world.put(new MapItem(new Color(139,69,19),65,this.world), new Tuple<Integer,Integer>(i,j));break;
                     }
                 }
