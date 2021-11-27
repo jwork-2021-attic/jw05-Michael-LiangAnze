@@ -154,6 +154,10 @@ public class Player extends Creature implements Runnable {
                         getReward();
                     }
                 }
+                else{
+                    // pos = this.getPos();
+                    // System.out.println(pos.first+","+pos.second);
+                }
 
             }
             if(cd == 0){

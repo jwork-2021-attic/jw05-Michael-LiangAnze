@@ -45,13 +45,14 @@ public class World {
                 tiles[i][j].setThing(new ScreenInfo(this, new Color(0, 0, 0), 0));
             }
         }
-        String[] rules = { "Rules:", 
-                "  -Escape the maze to win",
-                "  -Be careful of the monsters",
-                "  -When monster's color became ",
-                "   brighter,you are spotted",
-                "  -Pick up purple bottles and get",
-                "   rewards" };
+        String[] rules = { "RULES:", 
+                "  -PRESS WASD TO MOVE AND SPACE",
+                "   TO SHOOT",
+                "  -KILL ALL MONSTERS TO WIN",
+                "  -WHEN MONSTER'S COLOR BECAME",
+                "   BRIGHTER,YOU ARE SPOTTED",
+                "  -PICK UP PROPS AND GET REWARDS",
+                };
         int lineNum = 0;
         for (String line : rules) {
             for (int i = 0; i < line.length(); ++i) {

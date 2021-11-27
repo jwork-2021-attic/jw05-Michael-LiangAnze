@@ -110,6 +110,9 @@ public class Map {
                 if(index != -1){
                     creatureList.remove(index);
                 }
+                if(creatureList.size() == 1){
+                    world.setWorldState(2);
+                }
                 // System.out.println(creatureList.size());
             }
             res = false;
@@ -128,14 +131,24 @@ public class Map {
                 res = true;
             }
             else{ // 位置上可能有生物
+                int index = -1;
                 if(isCannonball){
                     Tuple<Integer,Integer>tempPos;
                     for(int i = 0;i < creatureList.size();++i){
                         tempPos = creatureList.get(i).getPos();
                         if(pos.first == tempPos.first && pos.second == tempPos.second){
                             creatureList.get(i).beAttack(1);
+                            if(creatureList.get(i).getHp() <= 0){
+                                index=i;
+                            }
                             break;
                         }
+                    }
+                    if(index != -1){
+                        creatureList.remove(index);
+                    }
+                    if(creatureList.size() == 1){
+                        world.setWorldState(2);
                     }
                 }
             }

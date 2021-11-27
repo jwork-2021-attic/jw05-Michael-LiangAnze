@@ -89,7 +89,7 @@ public class Shooter extends Creature implements Runnable {
         if (curPos.first == targetPos.first) {
             if (curPos.second < targetPos.second) { // 在上面
                 for (int i = curPos.second + 1; i < targetPos.second; i++) {
-                    if (areaMap[curPos.first][i] == 1) {
+                    if (areaMap[curPos.first][i] != 0) {
                         test = false;
                         break;
                     }
@@ -101,7 +101,7 @@ public class Shooter extends Creature implements Runnable {
                 }
             } else {
                 for (int i = targetPos.second + 1; i < curPos.second; i++) {
-                    if (areaMap[curPos.first][i] == 1) {
+                    if (areaMap[curPos.first][i] != 0) {
                         test = false;
                         break;
                     }
@@ -115,7 +115,7 @@ public class Shooter extends Creature implements Runnable {
         } else if (curPos.second == targetPos.second) {
             if (curPos.first < targetPos.first) {
                 for (int i = curPos.first + 1; i < targetPos.first; i++) {
-                    if (areaMap[i][curPos.second] == 1) {
+                    if (areaMap[i][curPos.second] != 0) {
                         test = false;
                         break;
                     }
@@ -128,7 +128,7 @@ public class Shooter extends Creature implements Runnable {
             } else {
                 // outputArea();
                 for (int i = targetPos.first + 1; i < curPos.first; i++) {
-                    if (areaMap[i][curPos.second] == 1) {
+                    if (areaMap[i][curPos.second] != 0) {
                         test = false;
                         break;
                     }
@@ -146,6 +146,7 @@ public class Shooter extends Creature implements Runnable {
     }
 
     private void attack(Tuple<Integer, Integer> curPos, int direction) {
+        this.setIcon(direction);
         switch(direction){
             case 1:cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first, curPos.second + 1), direction);break;
             case 2:cannonballList.addCannonball(new Tuple<Integer, Integer>(curPos.first, curPos.second - 1), direction);break;
