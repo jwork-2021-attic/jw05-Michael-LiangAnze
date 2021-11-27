@@ -12,6 +12,7 @@ public class Tuple<T1, T2> {
     public Tuple(){
         
     }
+    
     @Override
     public String toString() {
         return new String("<"+first+","+second+">");

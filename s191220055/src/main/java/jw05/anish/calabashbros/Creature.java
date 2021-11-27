@@ -28,17 +28,13 @@ public class Creature extends Thing {
         this.setIcon(direction);
         Tuple<Integer, Integer> curPos = getPos();
         int curX = curPos.first, curY = curPos.second;
-        if (direction == 1) {
-            return moveTo(curX, curY, curX, curY + 1);
-        } else if (direction == 2) {
-            return moveTo(curX, curY, curX, curY - 1);
-        } else if (direction == 3) {
-            return moveTo(curX, curY, curX - 1, curY);
-        } else if (direction == 4) {
-            return moveTo(curX, curY, curX + 1, curY);
-        } else {
-            System.out.println("direction:" + direction + " is illegal!");
-            return false;
+        switch(direction){
+            case 1:return moveTo(curX, curY, curX, curY + 1);
+            case 2:return moveTo(curX, curY, curX, curY - 1);
+            case 3:return moveTo(curX, curY, curX - 1, curY);
+            case 4:return moveTo(curX, curY, curX + 1, curY);
+            default:System.out.println("direction:" + direction + " is illegal!");
+                    return false;
         }
     }
 

@@ -111,14 +111,11 @@ public class SworksMan extends Creature implements Runnable {
         while (true) {
             flag = false;
             d = random.nextInt(4) + 1;
-            if (d == 1) {
-                flag = areaMap[pos.first][pos.second + 1] == 0 ? true : false;
-            } else if (d == 2) {
-                flag = areaMap[pos.first][pos.second - 1] == 0 ? true : false;
-            } else if (d == 3) {
-                flag = areaMap[pos.first - 1][pos.second] == 0 ? true : false;
-            } else if (d == 4) {
-                flag = areaMap[pos.first + 1][pos.second] == 0 ? true : false;
+            switch(d){
+                case 1:flag = areaMap[pos.first][pos.second + 1] == 0 ? true : false;break;
+                case 2:flag = areaMap[pos.first][pos.second - 1] == 0 ? true : false;break;
+                case 3:flag = areaMap[pos.first - 1][pos.second] == 0 ? true : false;break;
+                case 4:flag = areaMap[pos.first + 1][pos.second] == 0 ? true : false;break;
             }
             if (flag) {
                 if (moveTo(d)) {

@@ -28,7 +28,7 @@ public class CannonballList implements Runnable {
     public void addCannonball(Tuple<Integer, Integer> cannonPos, int direction) {
         lock.lock();
         Cannonball temp = new Cannonball(direction, damage, world);
-        if (map.setThing(cannonPos, 1,temp,false,true)) {
+        if (map.setThing(cannonPos, 1, temp, false, true)) {
             cannonballList.add(temp);
         }
         lock.unlock();
@@ -45,32 +45,33 @@ public class CannonballList implements Runnable {
         ArrayList<Cannonball> removeList = new ArrayList<Cannonball>();
         for (Cannonball c : cannonballList) {
             pos = c.getPos();
-            if (c.getDirection() == 1) {
-                if (map.moveThing(pos.first, pos.second, pos.first, pos.second + 1, true,c)) {
-            
-                } else { // 失败，和玩家一个格子
-                    removeList.add(c);
+            switch (c.getDirection()) {
+                case 1: {
+                    if (!map.moveThing(pos.first, pos.second, pos.first, pos.second + 1, true, c)) {// 失败，和玩家一个格子
+                        removeList.add(c);
+                    }
                 }
-            } else if (c.getDirection() == 2) {
-                if (map.moveThing(pos.first, pos.second, pos.first, pos.second - 1, true,c)) {
-                    
-                } else {
-                    removeList.add(c);
+                    break;
+                case 2: {
+                    if (!map.moveThing(pos.first, pos.second, pos.first, pos.second - 1, true, c)) {
+                        removeList.add(c);
+                    }
                 }
-            } else if (c.getDirection() == 3) {
-                if (map.moveThing(pos.first, pos.second, pos.first - 1, pos.second, true,c)) {
-                    
-                } else {
-                    removeList.add(c);
+                    break;
+                case 3: {
+                    if (!map.moveThing(pos.first, pos.second, pos.first - 1, pos.second, true, c)) {
+                        removeList.add(c);
+                    }
                 }
-            } else if (c.getDirection() == 4) {
-                if (map.moveThing(pos.first, pos.second, pos.first + 1, pos.second, true,c)) {
-                    
-                } else {
-                    removeList.add(c);
+                    break;
+                case 4: {
+                    if (!map.moveThing(pos.first, pos.second, pos.first + 1, pos.second, true, c)) {
+                        removeList.add(c);
+                    }
                 }
-            }
+                    break;
 
+            }
         }
         for (Cannonball i : removeList) {
             cannonballList.remove(i);
