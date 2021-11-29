@@ -8,8 +8,10 @@ public class World {
 
     public static final int WIDTH = 40;
     public static final int HEIGHT = WIDTH + 1;
-    public final int hpStartPos = 4;
-    public final int scoreStartPos = hpStartPos + 17;
+    public final int hpStartX = 4;
+    public final int hpStartY = WIDTH;
+    public final int scoreStartX = hpStartX + 17;
+    public final int scoreStartY = hpStartY;
     public final int rulesStartX = 3;
     public final int rulesStartY = 2;
     public final int pressEnterX = 9;
@@ -45,14 +47,14 @@ public class World {
                 tiles[i][j].setThing(new ScreenInfo(this, new Color(0, 0, 0), 0));
             }
         }
-        String[] rules = { "RULES:", 
+        String[] rules = { "RULES:",
                 "  -PRESS WASD TO MOVE AND SPACE",
                 "   TO SHOOT",
                 "  -KILL ALL MONSTERS TO WIN",
                 "  -WHEN MONSTER'S COLOR BECAME",
                 "   BRIGHTER,YOU ARE SPOTTED",
                 "  -PICK UP PROPS AND GET REWARDS",
-                };
+        };
         int lineNum = 0;
         for (String line : rules) {
             for (int i = 0; i < line.length(); ++i) {
@@ -70,11 +72,6 @@ public class World {
     }
 
     public void setGamingWorld() { // 游戏正式开始
-        for (int i = 0; i < WIDTH; ++i) {
-            for (int j = WIDTH; j < HEIGHT; ++j) {
-                tiles[i][j].setThing(new ScreenInfo(this, new Color(0, 0, 0), 0));
-            }
-        }
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT - 1; j++) {
                 tiles[i][j].setThing(new Floor(this));
@@ -86,24 +83,23 @@ public class World {
     public void setGameOverWorld() {
         String info1 = " YOU WIN ";
         String info2 = "GAME OVER";
-        for(int i = gameOverInfoX-1;i <=gameOverInfoX + 9;i++){
-            for(int j = gameOverInfoY-1;j < gameOverInfoY+2;j++){
+        for (int i = gameOverInfoX - 1; i <= gameOverInfoX + 9; i++) {
+            for (int j = gameOverInfoY - 1; j < gameOverInfoY + 2; j++) {
                 tiles[i][j].setThing(new ScreenInfo(this, new Color(0, 0, 0), 0));
             }
         }
-        if(getWorldState() == 2){
+        if (getWorldState() == 2) {
             for (int i = 0; i < info1.length(); ++i) {
                 tiles[gameOverInfoX + i][gameOverInfoY]
                         .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) info1.charAt(i)));
             }
-        }
-        else{
+        } else {
             for (int i = 0; i < info2.length(); ++i) {
                 tiles[gameOverInfoX + i][gameOverInfoY]
                         .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) info2.charAt(i)));
             }
         }
-        
+
     }
 
     private int transformX(int xPos) {
@@ -114,60 +110,55 @@ public class World {
         return YPos + WIDTH;
     }
 
-    public void setInfo(int hp, int score) {
-        // 画出ui
-        tiles[transformX(hpStartPos)][transformY(0)]
+    public void setPlayerInfo(int hp, int score) {
+        tiles[transformX(hpStartX)][transformY(0)]
                 .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) 'H'));
-        tiles[transformX(hpStartPos + 1)][transformY(0)]
+        tiles[transformX(hpStartX + 1)][transformY(0)]
                 .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) 'P'));
-        tiles[transformX(hpStartPos + 2)][transformY(0)]
+        tiles[transformX(hpStartX + 2)][transformY(0)]
                 .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) ':'));
-        tiles[transformX(scoreStartPos)][transformY(0)]
+        tiles[transformX(scoreStartX)][transformY(0)]
                 .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) 'S'));
-        tiles[transformX(scoreStartPos + 1)][transformY(0)]
+        tiles[transformX(scoreStartX + 1)][transformY(0)]
                 .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) 'C'));
-        tiles[transformX(scoreStartPos + 2)][transformY(0)]
+        tiles[transformX(scoreStartX + 2)][transformY(0)]
                 .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) 'O'));
-        tiles[transformX(scoreStartPos + 3)][transformY(0)]
+        tiles[transformX(scoreStartX + 3)][transformY(0)]
                 .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) 'R'));
-        tiles[transformX(scoreStartPos + 4)][transformY(0)]
+        tiles[transformX(scoreStartX + 4)][transformY(0)]
                 .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) 'E'));
-        tiles[transformX(scoreStartPos + 5)][transformY(0)]
+        tiles[transformX(scoreStartX + 5)][transformY(0)]
                 .setThing(new ScreenInfo(this, new Color(255, 255, 255), (int) ':'));
         updateInfo(hp, score);
     }
 
     private void updateInfo(int hp, int score) {
-        for (int i = hpStartPos + 3; i < scoreStartPos; ++i) {
+        for (int i = hpStartX + 3; i < scoreStartX; ++i) {
             tiles[transformX(i)][transformY(0)].setThing(new ScreenInfo(this, new Color(0, 0, 0), 0));
         }
-        for (int i = scoreStartPos + 6; i < WIDTH; ++i) {
+        for (int i = scoreStartX + 6; i < WIDTH; ++i) {
             tiles[transformX(i)][transformY(0)].setThing(new ScreenInfo(this, new Color(0, 0, 0), 0));
         }
-        for (int i = 0; i < hp && i < scoreStartPos; ++i) {
-            tiles[transformX(hpStartPos + 3 + i)][transformY(0)]
+        for (int i = 0; i < hp && i < scoreStartX; ++i) {
+            tiles[transformX(hpStartX + 3 + i)][transformY(0)]
                     .setThing(new ScreenInfo(this, new Color(255, 0, 0), 3));
         }
-        if (score > 0) {
-            int num1 = score % 10;
-            int num2 = score / 10;
+        int num1 = score % 10;
+        int num2 = score / 10;
+        if (score == 0) {
+            tiles[transformX(scoreStartX + 7)][transformY(0)]
+                    .setThing(new ScreenInfo(this, new Color(30, 30, 240), (int) '0'));
+        } else {
             if (num1 != 0) {
-                tiles[transformX(scoreStartPos + 7)][transformY(0)]
+                tiles[transformX(scoreStartX + 7)][transformY(0)]
                         .setThing(new ScreenInfo(this, new Color(30, 30, 240), (int) '0' + num1));
             }
             if (num2 != 0) {
-                tiles[transformX(scoreStartPos + 6)][transformY(0)]
+                tiles[transformX(scoreStartX + 6)][transformY(0)]
                         .setThing(new ScreenInfo(this, new Color(30, 30, 240), (int) '0' + num2));
             }
-        } else if (score == 0) {
-            tiles[transformX(scoreStartPos + 7)][transformY(0)]
-                    .setThing(new ScreenInfo(this, new Color(30, 30, 240), (int) '0'));
-        } else {
-            tiles[transformX(scoreStartPos + 6)][transformY(0)]
-                    .setThing(new ScreenInfo(this, new Color(30, 30, 240), (int) '-'));
-            tiles[transformX(scoreStartPos + 7)][transformY(0)]
-                    .setThing(new ScreenInfo(this, new Color(30, 30, 240), (int) '0' - score));
         }
+
     }
 
     public int getWorldSize() {
@@ -178,7 +169,7 @@ public class World {
         return this.tiles[x][y].getThing();
     }
 
-    public void put(Thing t, Tuple<Integer,Integer> pos) {
+    public void put(Thing t, Tuple<Integer, Integer> pos) {
         this.tiles[pos.first][pos.second].setThing(t);
     }
 

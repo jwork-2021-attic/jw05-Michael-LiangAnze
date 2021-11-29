@@ -2,8 +2,6 @@ package jw05.anish.calabashbros;
 
 import java.awt.Color;
 
-import jw05.anish.algorithm.Tuple;
-
 public class Cannonball extends Thing {
 
     private int direction;
@@ -15,9 +13,5 @@ public class Cannonball extends Thing {
 
     public int getDirection(){
         return this.direction;
-    }
-
-    public void destroy(Tuple<Integer, Integer>pos) {
-        world.put(new Floor(world), pos);
     }
 }

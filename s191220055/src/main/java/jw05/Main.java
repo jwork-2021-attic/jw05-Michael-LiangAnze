@@ -20,15 +20,14 @@ public class Main extends JFrame implements KeyListener {
 
     public Main() {
         super();
-        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.Guybrush_square_16x16); //
+        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.Guybrush_square_16x16); 
         add(terminal);
         pack();
         screen = new WorldScreen();
         screen.rulesScreen();
         Thread t = new Thread(new RefreshScreen(this,screen));
-        t.start();
         addKeyListener(this);
-        repaint();
+        t.start();  
     }
 
     @Override

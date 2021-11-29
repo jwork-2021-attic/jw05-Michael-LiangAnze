@@ -72,10 +72,8 @@ public class SworksMan extends Creature implements Runnable {
     @Override
     public synchronized void beAttack(int damage) {
         this.hp -= damage;
-        if (this.hp <= 0) { // 死亡
-            disappear();
-        }
     }
+
     private boolean reachTarget(int beginX, int beginY, int targetX, int targetY) {
         if (beginX == targetX) {
             if (beginY == targetY - 1 || beginY == targetY + 1) {
@@ -111,11 +109,19 @@ public class SworksMan extends Creature implements Runnable {
         while (true) {
             flag = false;
             d = random.nextInt(4) + 1;
-            switch(d){
-                case 1:flag = areaMap[pos.first][pos.second + 1] == 0 ? true : false;break;
-                case 2:flag = areaMap[pos.first][pos.second - 1] == 0 ? true : false;break;
-                case 3:flag = areaMap[pos.first - 1][pos.second] == 0 ? true : false;break;
-                case 4:flag = areaMap[pos.first + 1][pos.second] == 0 ? true : false;break;
+            switch (d) {
+                case 1:
+                    flag = areaMap[pos.first][pos.second + 1] == 0 ? true : false;
+                    break;
+                case 2:
+                    flag = areaMap[pos.first][pos.second - 1] == 0 ? true : false;
+                    break;
+                case 3:
+                    flag = areaMap[pos.first - 1][pos.second] == 0 ? true : false;
+                    break;
+                case 4:
+                    flag = areaMap[pos.first + 1][pos.second] == 0 ? true : false;
+                    break;
             }
             if (flag) {
                 if (moveTo(d)) {
@@ -154,7 +160,7 @@ public class SworksMan extends Creature implements Runnable {
                         moveTo(nextStepDirection);
                     } else {
                         if (target.getHp() >= 0) {
-                            if(cd == 4){
+                            if (cd == 4) {
                                 target.beAttack(damage);
                                 cd = 3;
                             }
@@ -171,14 +177,12 @@ public class SworksMan extends Creature implements Runnable {
                 randomWalk();
             }
 
-            //处理冷却时间
-            if(cd != 4 && cd != 0){
+            // 处理冷却时间
+            if (cd != 4 && cd != 0) {
                 cd--;
-            }
-            else if(cd == 0){
+            } else if (cd == 0) {
                 cd = 4;
             }
-            
 
             try {
                 TimeUnit.MILLISECONDS.sleep(sleepTime);

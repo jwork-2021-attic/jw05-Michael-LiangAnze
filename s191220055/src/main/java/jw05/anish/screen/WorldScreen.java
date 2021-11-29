@@ -33,9 +33,9 @@ public class WorldScreen implements Screen {
         world.setWorldState(0);
     }
 
-    private void generateOriginalMap() {
+    private void loadMapFile() {
         try {
-            map = new Map("src/main/java/jw05/anish/map/map1.txt",world);
+            map = new Map(world);
             map.loadMap();
             int mapSize = map.getMapSize();
             int[][] tempMap = new int[mapSize][mapSize];
@@ -80,7 +80,7 @@ public class WorldScreen implements Screen {
     @Override
     public void gamingScreen() {
         world.setGamingWorld();
-        generateOriginalMap();
+        loadMapFile();
         creatureList = new ArrayList<Creature>(); 
         map.setCreatureList(creatureList);
         cannonballList = new CannonballList(1, 300, map, world);

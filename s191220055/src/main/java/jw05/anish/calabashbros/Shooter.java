@@ -158,9 +158,6 @@ public class Shooter extends Creature implements Runnable {
     @Override
     public synchronized void beAttack(int damage) {
         this.hp -= damage;
-        if (this.hp <= 0) { // 死亡
-            disappear();
-        }
     }
 
     private void randomWalk() {

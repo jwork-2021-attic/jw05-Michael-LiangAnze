@@ -9,22 +9,27 @@ public class Thing {
 
     public Tile<? extends Thing> tile;
 
-    private int leftIcon = -1 ,rightIcon = -1;
+    private int leftIcon = -1, rightIcon = -1;
 
-    public void initIcon(int l,int r){
+    public void initIcon(int l, int r) {
         leftIcon = l;
         rightIcon = r;
     }
 
-    public void setIcon(int direction){
-        if(leftIcon !=-1 && rightIcon != -1){
-            switch(direction){
-                case 3:glyph = (char)leftIcon;break;
-                case 4:glyph = (char)rightIcon;break;
+    public void setIcon(int direction) {
+        if (leftIcon != -1 && rightIcon != -1) {
+            switch (direction) {
+                case 3:
+                    glyph = (char) leftIcon;
+                    break;
+                case 4:
+                    glyph = (char) rightIcon;
+                    break;
             }
         }
 
     }
+
     public Tuple<Integer, Integer> getPos() {
         return this.tile.getPos();
     }
@@ -58,5 +63,4 @@ public class Thing {
     public char getGlyph() {
         return this.glyph;
     }
-
 }

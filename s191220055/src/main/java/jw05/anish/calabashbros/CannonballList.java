@@ -7,16 +7,14 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CannonballList implements Runnable {
-    int speed;
-    int sleepTime;
-    ArrayList<Cannonball> cannonballList = null; // 坐标，炮弹是否有效
+    private int sleepTime;
+    private ArrayList<Cannonball> cannonballList = null; // 坐标，炮弹是否有效
     Map map;
-    int damage;
+    private int damage;
     World world;
     private Lock lock;
 
     public CannonballList(int damage, int speed, Map map, World world) {
-        // cannonballList = new ArrayList<Tuple<Tuple<Integer,Integer>,Integer>>();
         cannonballList = new ArrayList<Cannonball>();
         this.map = map;
         this.sleepTime = 1000 / speed * 50;
@@ -47,25 +45,25 @@ public class CannonballList implements Runnable {
             pos = c.getPos();
             switch (c.getDirection()) {
                 case 1: {
-                    if (!map.moveThing(pos.first, pos.second, pos.first, pos.second + 1, true, c)) {// 失败，和玩家一个格子
+                    if (!map.moveThing(pos, new Tuple<Integer, Integer>(pos.first, pos.second + 1), true)) {// 失败，和玩家一个格子
                         removeList.add(c);
                     }
                 }
                     break;
                 case 2: {
-                    if (!map.moveThing(pos.first, pos.second, pos.first, pos.second - 1, true, c)) {
+                    if (!map.moveThing(pos, new Tuple<Integer, Integer>(pos.first, pos.second - 1), true)) {
                         removeList.add(c);
                     }
                 }
                     break;
                 case 3: {
-                    if (!map.moveThing(pos.first, pos.second, pos.first - 1, pos.second, true, c)) {
+                    if (!map.moveThing(pos, new Tuple<Integer, Integer>(pos.first - 1, pos.second), true)) {
                         removeList.add(c);
                     }
                 }
                     break;
                 case 4: {
-                    if (!map.moveThing(pos.first, pos.second, pos.first + 1, pos.second, true, c)) {
+                    if (!map.moveThing(pos, new Tuple<Integer, Integer>(pos.first + 1, pos.second), true)) {
                         removeList.add(c);
                     }
                 }

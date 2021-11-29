@@ -14,12 +14,11 @@ public class RefreshScreen implements Runnable {
     @Override
     public void run() {
         while (true) {
-            // screen.updateScreenState();
             if(screen.getScreenState() > 1){ //游戏结束
                 screen.getThreadPool().shutdown(); //关闭开启的线程
                 screen.gameOverScreen();
                 mainWindow.repaint();
-                // break;
+                break;
             }
             else{
                 mainWindow.repaint();

@@ -1,5 +1,4 @@
 package jw05.anish.calabashbros;
-import jw05.asciiPanel.AsciiPanel;
 
 import java.awt.Color;
 public class MapItem extends Thing{
